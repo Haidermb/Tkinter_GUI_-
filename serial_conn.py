@@ -1,12 +1,12 @@
 import serial
 ser = serial.Serial()
 ser.baudrate = 19200
-ser.port = 'COM3'
+ser.port = 'COM8'
 #print(ser)
 # ser.open() NOT REQUIRED IF PORT IS ALREADY SPECIFY 
 # But her it is actually requred as ser.port is specified after initialization
 # but see ser1 it is already open as port is specified during initialization 
-#print(ser.is_open)
+print(ser.is_open)
 print(ser.port)
 
 ser1 = serial.Serial(
