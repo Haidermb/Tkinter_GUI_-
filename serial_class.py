@@ -45,7 +45,7 @@ class SerialConnection():
                 return a 
 
     
-    def get_all_ports(self):
+    def get_all_ports_old(self):
         '''
         Returns a dictionary containg all avaialable ports  
         Input : None 
@@ -72,6 +72,39 @@ class SerialConnection():
             return avai_dict
         else: 
             return False    
+    def get_all_ports(self):
+        '''
+        Returns a dictionary containg all avaialable ports  
+        Input : None 
+        Output : A dict {key->int : value->str}
+               : if ports are not available it return False -> bool
+        '''
+        avai =  list_ports.comports() 
+        
+        if len(avai) > 0:
+            new_port = []
+            new_name= []
+            for i in range(len(avai)):
+                cur_port =  str(avai[i])
+                port = cur_port[:4]
+                name = cur_port[6:]
+                new_port.append(port)
+                new_name.append(name)
+
+            l = [i for i in range (1,len(avai)+1)]
+        
+            avai_port_dict = {}
+            avai_name_dict ={}
+            for i , port in zip(l,new_port):
+                avai_port_dict.update({i:port})
+
+            for i , name in zip(l,new_name):
+                avai_name_dict.update({i:name})
+
+        # yield avai_port_dict        
+        # yield avai_name_dict
+
+        return [avai_port_dict,avai_name_dict]            
     
     def __start_conn (self):
         '''
@@ -101,43 +134,52 @@ class SerialConnection():
         line = line.decode('utf-8')
         return line
 
-    def start(self):
+    def main(self):
 
         try :     
-            ports = self.get_all_ports()
-            if ports != False:
-                for k,v in zip(ports.keys(),ports.values()):
+            all = self.get_all_ports()
+            if all != False:
+                ports = all[0]
+                names = all[1]
+                for k,v in zip(names.keys(),names.values()):
                     print(f'{k}) {v}')
                 try:
+                    i = None
                     i = int(input('Select any Port Press respective Number (1-9) : '))
                     if type(i) != int:
                        i = int(i)           
                 except :
                     print('input should be integer only (1-9)')
+                
                 if (type(i) == int) and (i in range (1,10)):
                     port = None
                     port = ports.get(i)
 
-                    if port !=None:
+                    if port :
                         self.set_port(port)
 
-                    try : 
-                          a = self.__start_conn()
-                          if a:
-                            while self.__Serial.is_open: 
-                                print(self.__read_data())
-                                if keyboard.is_pressed('q'):
-                                    res = self.__close_conn()
+                        try : 
+                            a = self.__start_conn()
+                            if a:
+                                while self.__Serial.is_open: 
+                                    print(self.__read_data())
+                                    if keyboard.is_pressed('q'):
+                                        res = self.__close_conn()
 
                                 
-                            if res == False:
-                                print('Connection is Closed')
+                                # if res == False:
+                                #     print('Connection is Closed')
 
+                                
+                                if res == False:
+                                    print('Connection is Closed')
 
-                            
-                    except ValueError: 
-                        print(f'Error in starting connection to port {port}')        
+                        except ValueError: 
+                    
+                            print(f'Error in starting connection to port {port}')        
 
+                    else : 
+                        print('Invalid Port Selected')
                 else :
                     print('Error in user input')
             else:
@@ -152,5 +194,11 @@ class SerialConnection():
 
 if __name__ == '__main__':
     
+    # ser = serial.Serial()
+    # ser.port = 'COM6'
+    # ser.open()
+    # ser.close()
+    #print(ser.is_open)
     ser = SerialConnection()
-    ser.start()
+    
+    ser.main()
