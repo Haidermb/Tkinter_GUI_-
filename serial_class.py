@@ -1,10 +1,12 @@
 import serial 
 from serial.tools import list_ports
 import keyboard
+import datetime as dt
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import random
 
 
-
-#from ..data_processing.raw_to_structured_data import find_data
 
 def find_data(line):
      
@@ -45,9 +47,16 @@ def find_data(line):
 
 class SerialConnection():
 
+
     
-    
+
     def __init__(self) -> None:
+
+        
+        self.fig = plt.figure()
+        self.ax = self.fig.add_subplot(1, 1, 1)
+        self.xs = []
+        self.ys = []
         
         
         self.__port=None
@@ -154,8 +163,40 @@ class SerialConnection():
         para = ['Pressure','Int_temp','Ext_temp','Humidity','Voltage']    
         l = [i for i in para]
         
+    def c_animate(self,i, xs, ys):
+
+        line = self.__read_data() 
+        dict_value  = find_data(line[12:])
+
+        p = dict_value['Pressure']
+        it = dict_value['Int_temp']
+        et = dict_value['Ext_temp']
+        h = dict_value['Humidity']
+        v = dict_value['Voltage']
+     
+
+
+        # Add x and y to lists
+        xs.append(dt.datetime.now().strftime('%H:%M:%S'))
+        ys.append(h)
+
+        # Limit x and y lists to 20 items
+        xs = xs[-20:]
+        ys = ys[-20:]
+
+        # Draw x and y lists
+        self.ax.clear()
+        self.ax.plot(xs, ys)
+
+        # Format plot
+        plt.xticks(rotation=45, ha='right')
+        plt.subplots_adjust(bottom=0.30)
+        plt.title('TMP102 Temperature over Time')
+        plt.ylabel('Temperature (deg C)')
 
     def main(self):
+
+
 
         try :     
             all = self.get_all_ports()
@@ -182,6 +223,9 @@ class SerialConnection():
                         try : 
                             a = self.__start_conn()
                             if a:
+                                ani = animation.FuncAnimation(self.fig, self.c_animate, fargs=(self.xs, self.ys), interval=1000)
+                                plt.show()
+
                                 while self.__Serial.is_open: 
                                     line = self.__read_data()
                                     #print(line[11:])
@@ -236,11 +280,7 @@ class SerialConnection():
                 print('No Ports available')
         except ValueError:
             print('test')
-
-
-        
-            
-
+    
 
 if __name__ == '__main__':
     
