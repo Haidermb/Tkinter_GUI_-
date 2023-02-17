@@ -2,7 +2,50 @@ import serial
 from serial.tools import list_ports
 import keyboard
 
+
+
+#from ..data_processing.raw_to_structured_data import find_data
+
+def find_data(line):
+     
+    s1 = ['P', 'I', 'E', 'U', 'X', "t", 'l', 'x', 'o', 'y', 's', 'h']
+    e1 = ['I', 'E', 'U', 'X', "123456789", 'l', 'x', 'o', 'y', 'q1s', 'h', 'P0']
+    p1 = ["Pressure", "Int_temp", "Ext_temp", "Humidity", "Voltage", "GPS time",
+      "Latitutde", "direction n/s", "Longitude", "direction e/w", "No. of satelite", "GPS altitude"]
+    len1 = [5, 5, 5, 5, 2, 8, 9, 1, 9, 1, 2, 8]
+    div = [10, 100, 100, 100, 10, 1, 1, 1, 1, 1, 1, 1]
+    mylist = []
+
+    line = line
+
+    output = {}
+    for i in range(len(s1)):
+        beg = line.find(s1[i])
+        end = line.find(e1[i])
+        if beg == -1 or end == -1:
+            continue
+        val = line[beg+1:end]
+        if len(val) <= len1[i]:
+            try:
+
+                value = int(val)/div[i]
+                output[p1[i]] = value
+            except:
+                try:
+                    value = val
+                    output[p1[i]] = value
+                except:
+                    continue
+        else:
+            continue
+    #mylist.append(output)
+    return output
+
+
+
 class SerialConnection():
+
+    
     
     def __init__(self) -> None:
         
@@ -45,33 +88,6 @@ class SerialConnection():
                 return a 
 
     
-    def get_all_ports_old(self):
-        '''
-        Returns a dictionary containg all avaialable ports  
-        Input : None 
-        Output : A dict {key->int : value->str}
-               : if ports are not available it return False -> bool
-        '''
-        avai =  list_ports.comports() 
-        
-        if len(avai) > 0:
-            new_avai = []
-        
-            for i in range(len(avai)):
-                cur_port =  str(avai[i])
-                a = cur_port[:4]
-                new_avai.append(a)
-
-            l = [i for i in range (1,len(avai)+1)]
-        
-            avai_dict = {}
-
-            for i , v in zip(l,new_avai):
-                avai_dict.update({i:v})
-
-            return avai_dict
-        else: 
-            return False    
     def get_all_ports(self):
         '''
         Returns a dictionary containg all avaialable ports  
@@ -134,6 +150,11 @@ class SerialConnection():
         line = line.decode('utf-8')
         return line
 
+    def __user_input(self):
+        para = ['Pressure','Int_temp','Ext_temp','Humidity','Voltage']    
+        l = [i for i in para]
+        
+
     def main(self):
 
         try :     
@@ -162,15 +183,44 @@ class SerialConnection():
                             a = self.__start_conn()
                             if a:
                                 while self.__Serial.is_open: 
-                                    print(self.__read_data())
+                                    line = self.__read_data()
+                                    #print(line[11:])
+                                    dict_value  = find_data(line[12:])
+                                    #print(dict_value)
+                                    if dict_value:
+                                        res = self.__close_conn()
                                     if keyboard.is_pressed('q'):
                                         res = self.__close_conn()
 
-                                
-                                # if res == False:
-                                #     print('Connection is Closed')
+                                res = self.__close_conn()        
 
-                                
+                                p = dict_value['Pressure']
+                                it = dict_value['Int_temp']
+                                et = dict_value['Ext_temp']
+                                h = dict_value['Humidity']
+                                v = dict_value['Voltage']
+
+                                print(f'\nPressure : {p}\nInternal_temp : {it}\nExternal_temp : {et}\nHumidity : {h}\nVoltage : {v}\n')
+
+                                if dict_value:
+                                    try: 
+                                        p_u = float(input('\nEnter Presure : '))
+                                        it_u = float(input('\nEnter Internal_temp : '))
+                                        et_u = float(input('\nEnter External_temp : '))
+                                        h_u = float(input('\nEnter Humidity : '))
+                                        v_u = float(input('\nEnter Voltage : '))
+                                    except:
+                                        print('User Input Error')  
+
+                                    er_p = p_u-p
+                                    er_it = it_u-it
+                                    er_et = et_u-et
+                                    er_h = h_u-h
+                                    er_v = v_u-v       
+
+                                    print(f'\n2Error in Pressure : {abs(er_p)}\nError in Internal_temp : {abs(er_it)}\nError in External_temp : {abs(er_et)}\nError in Humidity : {abs(er_h)}\nError in Voltage : {abs(er_v)}\n')
+ 
+
                                 if res == False:
                                     print('Connection is Closed')
 
@@ -194,11 +244,6 @@ class SerialConnection():
 
 if __name__ == '__main__':
     
-    # ser = serial.Serial()
-    # ser.port = 'COM6'
-    # ser.open()
-    # ser.close()
-    #print(ser.is_open)
     ser = SerialConnection()
     
     ser.main()
