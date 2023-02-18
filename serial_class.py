@@ -165,15 +165,17 @@ class SerialConnection():
         
     def c_animate(self,i, xs, ys):
 
+
         line = self.__read_data() 
         dict_value  = find_data(line[12:])
-
-        p = dict_value['Pressure']
-        it = dict_value['Int_temp']
-        et = dict_value['Ext_temp']
-        h = dict_value['Humidity']
-        v = dict_value['Voltage']
-     
+        if dict_value :
+                
+            p = dict_value['Pressure']
+            it = dict_value['Int_temp']
+            et = dict_value['Ext_temp']
+            h = dict_value['Humidity']
+            v = dict_value['Voltage']
+        
 
 
         # Add x and y to lists
@@ -193,6 +195,46 @@ class SerialConnection():
         plt.subplots_adjust(bottom=0.30)
         plt.title('TMP102 Temperature over Time')
         plt.ylabel('Temperature (deg C)')
+
+    def start_graph(self):
+
+        ani = animation.FuncAnimation(self.fig, self.c_animate, fargs=(self.xs, self.ys), interval=1000)
+        plt.show()
+
+    def find_data(self,line):
+        
+        s1 = ['P', 'I', 'E', 'U', 'X', "t", 'l', 'x', 'o', 'y', 's', 'h']
+        e1 = ['I', 'E', 'U', 'X', "123456789", 'l', 'x', 'o', 'y', 'q1s', 'h', 'P0']
+        p1 = ["Pressure", "Int_temp", "Ext_temp", "Humidity", "Voltage", "GPS time",
+        "Latitutde", "direction n/s", "Longitude", "direction e/w", "No. of satelite", "GPS altitude"]
+        len1 = [5, 5, 5, 5, 2, 8, 9, 1, 9, 1, 2, 8]
+        div = [10, 100, 100, 100, 10, 1, 1, 1, 1, 1, 1, 1]
+        mylist = []
+
+        line = line
+
+        output = {}
+        for i in range(len(s1)):
+            beg = line.find(s1[i])
+            end = line.find(e1[i])
+            if beg == -1 or end == -1:
+                continue
+            val = line[beg+1:end]
+            if len(val) <= len1[i]:
+                try:
+
+                    value = int(val)/div[i]
+                    output[p1[i]] = value
+                except:
+                    try:
+                        value = val
+                        output[p1[i]] = value
+                    except:
+                        continue
+            else:
+                continue
+        #mylist.append(output)
+        return output
 
     def main(self):
 
@@ -223,9 +265,8 @@ class SerialConnection():
                         try : 
                             a = self.__start_conn()
                             if a:
-                                ani = animation.FuncAnimation(self.fig, self.c_animate, fargs=(self.xs, self.ys), interval=1000)
-                                plt.show()
-
+                                self.start_graph()
+                                    
                                 while self.__Serial.is_open: 
                                     line = self.__read_data()
                                     #print(line[11:])
