@@ -17,6 +17,7 @@ class Graph:
         self.xs = []
         self.ys = []
 
+        
         self.v = None
         
     def gen(self):
