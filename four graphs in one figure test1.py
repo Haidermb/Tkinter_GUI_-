@@ -49,4 +49,7 @@ def animate(frame):
 animation = FuncAnimation(fig, animate, frames=200, interval=30)
 
 # Show the plot
-plt.show()
+#plt.show()
+x = np.linspace(0, 2*np.pi, 200)
+print(x.shape)
+print(lines[0])

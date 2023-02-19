@@ -1,17 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-import datetime as dt
+from datetime import datetime, timedelta
 import random
 
 
 class Graphs_4:
 
     def __init__(self) -> None:
-        self.fig ,self.axs =  plt.subplots(nrows=2, ncols=2, figsize=(8, 6)) 
-        self.ax =self.fig.subplots_adjust(hspace=0.5, wspace=0.5)
-        self.axs = self.axs.ravel()
-        self.x = []
+        self.fig, self.axs = plt.subplots(2, 2, figsize=(10, 6))
+        self.graphs = [self.axs[0, 0], self.axs[0, 1], self.axs[1, 0], self.axs[1, 1]]
+        self.x = [datetime.now() + timedelta(seconds=i) for i in range(100)]
         self.y1 = []
         self.y2 = []
         self.y3 = []
@@ -19,18 +18,16 @@ class Graphs_4:
 
 
         self.lines = []
-        
-        for i, ax in enumerate(self.axs):
-            if i == 0:
-                line, = ax.plot(self.x, self.y1)
-            elif i == 1:
-                line, = ax.plot(self.x, self.y2)
-            elif i == 2:
-                line, = ax.plot(self.x, self.y3)
-            else:
-                line, = ax.plot(self.x, self.y4)
+        for graph in self.graphs:
+            line, = graph.plot([], [])
             self.lines.append(line)
-    
+
+        self.animations = []
+        for i in range(len(self.lines)):
+            animation = FuncAnimation(self.fig, self.update_graph, frames=100, fargs=(i,), interval=50)
+            self.animations.append(animation)
+
+
     def gen2(self):
         a = {}
         l = ['Pressure','Int_temp','Ext_temp','Humidity','Voltage']
@@ -69,6 +66,7 @@ class Graphs_4:
         self.lines[2].set_ydata(h)
         self.lines[3].set_ydata(v)
         
+
         return self.lines
 
     def _2_animate(self,i,x,y1,y2,y3,y4):
@@ -91,8 +89,7 @@ class Graphs_4:
         y1.append(h)
         y1.append(v)
 
-        self.ax.clear()
-        self.ax.plot(x, y1)
+        
 
 
     def start_graph(self):
