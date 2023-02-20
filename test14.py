@@ -15,15 +15,29 @@ class Graph:
         self.fig = plt.figure()
         self.ax1 = self.fig.add_subplot(2, 2, 1)
         self.ax2 = self.fig.add_subplot(2, 2, 2)
-        # self.ax3 = self.fig.add_subplot(2, 2, 3)
-        # self.ax4 = self.fig.add_subplot(2, 2, 4)
+        self.ax3 = self.fig.add_subplot(2, 2, 3)
+        self.ax4 = self.fig.add_subplot(2, 2, 4)
 
 
         self.xs = []
         self.ys = []
+        self.y1 = []
+        self.y2 = []
+        self.y3 = []
+        self.y4 = []
+
+
 
         
         self.v = None
+
+    def g1(self,xs,y1) :
+        
+        # = append(dt.datetime.now().strftime('%H:%M:%S'))
+
+        #self.y1.append()
+        pass
+
         
     def gen(self):
 
@@ -47,7 +61,7 @@ class Graph:
 
         return a
         
-    def c_animate(self,i, xs, ys):
+    def c_animate(self,i,xs,y1,y2,y3,y4):
 
         # line = self.__read_data() 
         # dict_value  = find_data(line[12:])
@@ -59,25 +73,44 @@ class Graph:
             # v = dict_value['Voltage']
         
         h = self.gen()
-
+        
         # Add x and y to lists
         xs.append(dt.datetime.now().strftime('%H:%M:%S'))
-        ys.append(h)
+        y1.append(h)
+        y2.append(h)
+        y3.append(h)
+        y4.append(h)
+
+
 
         # Limit x and y lists to 20 items
         xs = xs[-20:]
-        ys = ys[-20:]
-        
+        y1 = y1[-20:]
+        y2 = y2[-20:]
+        y3 = y3[-20:]
+        y4 = y4[-20:]
+
         # Draw x and y lists
         self.ax1.clear()
-        self.ax1.plot(xs, ys)
+        self.ax1.plot(xs, y1)
+        plt.xticks(rotation=45, ha='right')
 
         self.ax2.clear()
-        self.ax2.plot(xs, ys)
+        self.ax2.plot(xs, y2)
+        plt.xticks(rotation=45, ha='right')
+
+
+        self.ax3.clear()
+        self.ax3.plot(xs, y3)
+        plt.xticks(rotation=45, ha='right')
+
+        self.ax4.clear()
+        self.ax4.plot(xs, y4)
 
         # Format plot
+        
         plt.xticks(rotation=45, ha='right')
-        plt.xticks(rotation=45, ha='right')
+        #plt.xticks(rotation=45, ha='right')
         plt.subplots_adjust(bottom=0.30)
         plt.title('TMP102 Temperature over Time')
         plt.ylabel('Temperature (deg C)')
@@ -125,7 +158,7 @@ class Graph:
     def start_graph(self,w):
 
         self.v = w    
-        self.ani = animation.FuncAnimation(self.fig, self.c_animate ,fargs=(self.xs, self.ys), interval=1000)
+        self.ani = animation.FuncAnimation(self.fig, self.c_animate ,fargs=(self.xs, self.y1,self.y2,self.y3,self.y4), interval=1000)
         plt.show()
 
 
