@@ -12,7 +12,7 @@ class Graph:
 
     def __init__(self) -> None:
        
-        self.fig = plt.figure()
+        self.fig = plt.figure(tight_layout=True)
         self.ax1 = self.fig.add_subplot(2, 2, 1)
         self.ax2 = self.fig.add_subplot(2, 2, 2)
         self.ax3 = self.fig.add_subplot(2, 2, 3)
@@ -92,28 +92,38 @@ class Graph:
 
         # Draw x and y lists
         self.ax1.clear()
-        self.ax1.plot(xs, y1)
-        plt.xticks(rotation=45, ha='right')
+        self.ax1.plot(xs, y2)
+        self.ax1.set_xticklabels(xs,rotation=45)
+        #self.ax1.tick_params(axis="x", labelsize=30,rotation =45,ha='right')
+
 
         self.ax2.clear()
         self.ax2.plot(xs, y2)
-        plt.xticks(rotation=45, ha='right')
+        self.ax2.set_xticklabels(xs,rotation=45)
+
 
 
         self.ax3.clear()
         self.ax3.plot(xs, y3)
-        plt.xticks(rotation=45, ha='right')
+        self.ax3.set_xticklabels(xs,rotation=45)
+
 
         self.ax4.clear()
         self.ax4.plot(xs, y4)
+        self.ax4.set_xticklabels(xs,rotation=45)
 
         # Format plot
         
-        plt.xticks(rotation=45, ha='right')
         #plt.xticks(rotation=45, ha='right')
-        plt.subplots_adjust(bottom=0.30)
-        plt.title('TMP102 Temperature over Time')
-        plt.ylabel('Temperature (deg C)')
+        #plt.xticks(rotation=45, ha='right')
+        plt.subplots_adjust(bottom=0.38)
+        self.ax1.set_title('Pressure')
+        self.ax2.set_title('Ext_Temp')
+        self.ax3.set_title('Humid')
+        self.ax4.set_title('Volt')
+        
+        #plt.title('TMP102 Temperature over Time')
+        #plt.ylabel('Temperature (deg C)')
 
     def c_animate_test(self,i, xs, ys):
 
