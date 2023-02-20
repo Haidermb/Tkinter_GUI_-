@@ -12,7 +12,7 @@ class Graph:
 
     def __init__(self) -> None:
        
-        self.fig = plt.figure(tight_layout=True)
+        self.fig = plt.figure(figsize=(8, 8),tight_layout=True)
         self.ax1 = self.fig.add_subplot(2, 2, 1)
         self.ax2 = self.fig.add_subplot(2, 2, 2)
         self.ax3 = self.fig.add_subplot(2, 2, 3)
@@ -65,30 +65,31 @@ class Graph:
 
         # line = self.__read_data() 
         # dict_value  = find_data(line[12:])
-        #if dict_value :
-            # p = dict_value['Pressure']
-            # it = dict_value['Int_temp']
-            # et = dict_value['Ext_temp']
-            # h = dict_value['Humidity']
-            # v = dict_value['Voltage']
+        dict_value  = self.gen2()
+        if dict_value :
+            p = dict_value['Pressure']
+            it = dict_value['Int_temp']
+            et = dict_value['Ext_temp']
+            h = dict_value['Humidity']
+            v = dict_value['Voltage']
         
-        h = self.gen()
+        #h = self.gen()
         
         # Add x and y to lists
         xs.append(dt.datetime.now().strftime('%H:%M:%S'))
-        y1.append(h)
-        y2.append(h)
+        y1.append(p)
+        y2.append(et)
         y3.append(h)
-        y4.append(h)
+        y4.append(v)
 
 
 
         # Limit x and y lists to 20 items
-        xs = xs[-20:]
-        y1 = y1[-20:]
-        y2 = y2[-20:]
-        y3 = y3[-20:]
-        y4 = y4[-20:]
+        xs = xs[-10:]
+        y1 = y1[-10:]
+        y2 = y2[-10:]
+        y3 = y3[-10:]
+        y4 = y4[-10:]
 
         # Draw x and y lists
         self.ax1.clear()
