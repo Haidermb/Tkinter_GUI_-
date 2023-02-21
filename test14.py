@@ -84,7 +84,7 @@ class Graph:
 
 
 
-        # Limit x and y lists to 20 items
+        # Limit x and y lists to 10 items
         xs = xs[-10:]
         y1 = y1[-10:]
         y2 = y2[-10:]
@@ -93,24 +93,24 @@ class Graph:
 
         # Draw x and y lists
         self.ax1.clear()
-        self.ax1.plot(xs, y2)
+        self.ax1.plot(xs, y2,marker ='.',color ='r')
         self.ax1.set_xticklabels(xs,rotation=45)
         #self.ax1.tick_params(axis="x", labelsize=30,rotation =45,ha='right')
 
 
         self.ax2.clear()
-        self.ax2.plot(xs, y2)
+        self.ax2.plot(xs, y2,marker='.',color ='b')
         self.ax2.set_xticklabels(xs,rotation=45)
 
 
 
         self.ax3.clear()
-        self.ax3.plot(xs, y3)
+        self.ax3.plot(xs, y3,marker ='.',color ='g')
         self.ax3.set_xticklabels(xs,rotation=45)
 
 
         self.ax4.clear()
-        self.ax4.plot(xs, y4)
+        self.ax4.plot(xs, y4,marker ='.')
         self.ax4.set_xticklabels(xs,rotation=45)
 
         # Format plot

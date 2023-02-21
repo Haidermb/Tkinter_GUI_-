@@ -5,6 +5,7 @@ import datetime as dt
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import random
+import re
 
 
 
@@ -19,6 +20,7 @@ def find_data(line):
     mylist = []
 
     line = line
+    line='P10143I+2060E+3438U03711X311234567890'
 
     output = {}
     for i in range(len(s1)):
@@ -43,7 +45,13 @@ def find_data(line):
     #mylist.append(output)
     return output
 
-
+def raw_to_clean(line):
+    line='P10143I+2060E+3438U03711X311234567890'
+    regex = '\d+'             
+    
+    match = re.findall(regex, line) 
+    print(match) 
+    
 
 class SerialConnection():
 
