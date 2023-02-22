@@ -6,7 +6,8 @@ import random
 from serial_connec import *
 
 class Graph_1:
-    def __init__(self,x: int,y: int,k:str) -> None:
+    
+    def __init__(self,x: int,y: int,k:str,ser) -> None:
        
         # Create a Matplotlib figure and add a plot to it
         self.fig = plt.Figure(figsize=(x, y), dpi=100)
@@ -14,7 +15,8 @@ class Graph_1:
         self.xs = []
         self.ys = []
         self.k = k
-        
+        self.ser = ser
+
     def gen2(self):
         a = {}
         l = ['Pressure','Int_temp','Ext_temp','Humidity','Voltage']
@@ -33,7 +35,7 @@ class Graph_1:
         return a
         
     def c_animate(self,i,xs,ys):
-        s1 = SerialConnection()
+        self.ser = SerialConnection()
         # line =     
         # line = self.__read_data() 
         # dict_value  = find_data(line[12:])
@@ -67,7 +69,7 @@ class Graph_1:
 
 class Graph_4:
 
-    def __init__(self,x,y) -> None:
+    def __init__(self,x,y,ser) -> None:
        
         self.fig = plt.figure(figsize=(x,y),tight_layout=True)
         self.ax1 = self.fig.add_subplot(2, 2, 1)

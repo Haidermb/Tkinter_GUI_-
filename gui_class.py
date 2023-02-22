@@ -25,7 +25,7 @@ class tab():
 
 class Canvas():
     
-    def __init__(self) -> None:
+    def __init__(self,fig,tab1) -> None:
         
         # Add the plot to a Tkinter canvas
         
@@ -33,7 +33,4 @@ class Canvas():
             self.canvas.draw()
             self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-
-
-c = Canvas()
 

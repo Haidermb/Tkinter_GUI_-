@@ -1,6 +1,7 @@
 import serial
 from serial.tools import list_ports
-
+import keyboard
+from clean_data import *
 
 class SerialConnection():
 
@@ -76,7 +77,7 @@ class SerialConnection():
 
         return [avai_port_dict,avai_name_dict]            
     
-    def __start_conn (self):
+    def start_conn (self):
         '''
         Start the serial conn with current port specified
         Returns a Boolean Value True if conn is open else False   
@@ -85,7 +86,7 @@ class SerialConnection():
         res = self.__Serial.is_open
         return res
 
-    def __close_conn(self):
+    def close_conn(self):
         '''
         Close the serial conn 
         Returns a Boolean Value False if conn is Closed 
@@ -96,10 +97,132 @@ class SerialConnection():
         
         return self.__Serial.is_open
  
-    def __read_data(self):
+    def check_current_status(self):
+        return self.__Serial.open()
+  
+    def read_data(self):
 
         """Read data line by line and return it """
 
         line = self.__Serial.readline()
         line = line.decode('utf-8')
-        return line
+        clean_line = find_data(line[12:]) 
+        return clean_line
+
+    def main(self):
+
+        try :     
+            all = self.get_all_ports()
+            if all != False:
+                ports = all[0]
+                names = all[1]
+                for k,v in zip(names.keys(),names.values()):
+                    print(f'{k}) {v}')
+                try:
+                    i = None
+                    i = int(input('Select any Port Press respective Number (1-9) : '))
+                    if type(i) != int:
+                       i = int(i)           
+                except :
+                    print('input should be integer only (1-9)')
+                
+                if (type(i) == int) and (i in range (1,10)):
+                    port = None
+                    port = ports.get(i)
+
+                    if port :
+                        self.set_port(port)
+
+                        
+                    else : 
+                        print('Invalid Port Selected')
+                else :
+                    print('Error in user input')
+            else:
+                print('No Ports available')
+        except ValueError:
+            print('test')
+        
+    def error_check(self):
+
+
+
+        try :     
+            all = self.get_all_ports()
+            if all != False:
+                ports = all[0]
+                names = all[1]
+                for k,v in zip(names.keys(),names.values()):
+                    print(f'{k}) {v}')
+                try:
+                    i = None
+                    i = int(input('Select any Port Press respective Number (1-9) : '))
+                    if type(i) != int:
+                       i = int(i)           
+                except :
+                    print('input should be integer only (1-9)')
+                
+                if (type(i) == int) and (i in range (1,10)):
+                    port = None
+                    port = ports.get(i)
+
+                    if port :
+                        self.set_port(port)
+
+                        try : 
+                            a = self.__start_conn()
+                            if a:
+                                self.start_graph()
+
+                                while self.__Serial.is_open: 
+                                    dict_value = self.read_data()
+
+                                    if dict_value:
+                                        res = self.__close_conn()
+                                    if keyboard.is_pressed('q'):
+                                        res = self.__close_conn()
+
+                                res = self.__close_conn()        
+
+                                p = dict_value['Pressure']
+                                it = dict_value['Int_temp']
+                                et = dict_value['Ext_temp']
+                                h = dict_value['Humidity']
+                                v = dict_value['Voltage']
+
+                                print(f'\nPressure : {p}\nInternal_temp : {it}\nExternal_temp : {et}\nHumidity : {h}\nVoltage : {v}\n')
+
+                                if dict_value:
+                                    try: 
+                                        p_u = float(input('\nEnter Presure : '))
+                                        it_u = float(input('\nEnter Internal_temp : '))
+                                        et_u = float(input('\nEnter External_temp : '))
+                                        h_u = float(input('\nEnter Humidity : '))
+                                        v_u = float(input('\nEnter Voltage : '))
+                                    except:
+                                        print('User Input Error')  
+
+                                    er_p = p_u-p
+                                    er_it = it_u-it
+                                    er_et = et_u-et
+                                    er_h = h_u-h
+                                    er_v = v_u-v       
+
+                                    print(f'\n2Error in Pressure : {abs(er_p)}\nError in Internal_temp : {abs(er_it)}\nError in External_temp : {abs(er_et)}\nError in Humidity : {abs(er_h)}\nError in Voltage : {abs(er_v)}\n')
+ 
+
+                                if res == False:
+                                    print('Connection is Closed')
+
+                        except ValueError: 
+                    
+                            print(f'Error in starting connection to port {port}')        
+
+                    else : 
+                        print('Invalid Port Selected')
+                else :
+                    print('Error in user input')
+            else:
+                print('No Ports available')
+        except ValueError:
+            print('test')
