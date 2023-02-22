@@ -153,5 +153,10 @@ table.configure(yscrollcommand=scrollbar.set)
 scrollbar.pack(side="right", fill="y")
 table.pack(side="left", fill="both", expand=True)
 
+ scroll_bar = ttk.Scrollbar(root)
 
+ scroll_bar.pack( side = 'right',fill = 'y')
+
+ scrollbar = ttk.Scrollbar(root, orient="vertical")
+ root.configure(yscrollcommand=scrollbar.set)
 root.mainloop()
