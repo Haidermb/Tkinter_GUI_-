@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import random
 
+from serial_connec import *
 
 class Graph_1:
     def __init__(self,x: int,y: int,k:str) -> None:
@@ -32,7 +33,8 @@ class Graph_1:
         return a
         
     def c_animate(self,i,xs,ys):
-
+        s1 = SerialConnection()
+        # line =     
         # line = self.__read_data() 
         # dict_value  = find_data(line[12:])
         dict_value  = self.gen2()
@@ -133,7 +135,6 @@ class Graph_4:
         self.ax1.clear()
         self.ax1.plot(xs, y2,marker ='.',color ='r')
         self.ax1.set_xticklabels(xs,rotation=45)
-        #self.ax1.tick_params(axis="x", labelsize=30,rotation =45,ha='right')
 
 
         self.ax2.clear()

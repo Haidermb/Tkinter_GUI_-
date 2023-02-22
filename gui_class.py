@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from graphs import Graph
+from graphs import *
         
 
 class Gui:
@@ -16,23 +16,24 @@ class Gui:
             
             
         
-class tab(Gui):
+class tab():
 
-    def new_tab(self):
+    def __init__(self,n):
         # Create a frame for the first tab
-        self.tab = ttk.Frame(self.notebook)
+        self.tab = ttk.Frame(n)
 
 
-class Canvas(tab):
+class Canvas():
     
     def __init__(self) -> None:
-        # Create a Matplotlib figure and add a plot to it
-            self.g = Graph()
         
         # Add the plot to a Tkinter canvas
         
-            self.canvas = FigureCanvasTkAgg(self.g.fig, master=self.tab)
+            self.canvas = FigureCanvasTkAgg(fig, master=tab1)
             self.canvas.draw()
             self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
+
+
+c = Canvas()
 
