@@ -4,11 +4,70 @@ import matplotlib.animation as animation
 import random
 
 
-class Graph:
-
-    def __init__(self) -> None:
+class Graph_1:
+    def __init__(self,x: int,y: int,k:str) -> None:
        
-        self.fig = plt.figure(figsize=(8, 8),tight_layout=True)
+        # Create a Matplotlib figure and add a plot to it
+        self.fig = plt.Figure(figsize=(x, y), dpi=100)
+        self.ax = self.fig1.add_subplot(111)
+        self.xs = []
+        self.ys = []
+        self.k = k
+        
+    def gen2(self):
+        a = {}
+        l = ['Pressure','Int_temp','Ext_temp','Humidity','Voltage']
+        p = random.randint(1,10)
+        it = random.randint(1,10)
+        et  = random.randint(20,40)
+        h = random.randint(60,80)
+        v = random.randint(1,5)
+        
+        a.update({l[0]:p})
+        a.update({l[1]:it})
+        a.update({l[2]:et})
+        a.update({l[3]:h})
+        a.update({l[4]:v})    
+
+        return a
+        
+    def c_animate(self,i,xs,ys):
+
+        # line = self.__read_data() 
+        # dict_value  = find_data(line[12:])
+        dict_value  = self.gen2()
+        if dict_value :
+            y = dict_value[self.k]
+            
+        #h = self.gen()
+        
+        # Add x and y to lists
+        xs.append(dt.datetime.now().strftime('%H:%M:%S'))
+        ys.append(y)
+
+
+        # Limit x and y lists to 10 items
+        xs = xs[-20:]
+        ys = ys[-20:]
+        # Draw x and y lists
+        self.ax.clear()
+        self.ax.plot(xs, ys,marker ='.',color ='r')
+        self.ax.set_xticklabels(xs,rotation=45)
+        plt.subplots_adjust(bottom=0.38)
+        self.ax.set_title(self.k)
+        
+    def start_graph(self):
+   
+        self.ani = animation.FuncAnimation(self.fig, self.c_animate ,fargs=(self.xs, self.ys), interval=1000)
+        plt.show()
+
+
+
+class Graph_4:
+
+    def __init__(self,x,y) -> None:
+       
+        self.fig = plt.figure(figsize=(x,y),tight_layout=True)
         self.ax1 = self.fig.add_subplot(2, 2, 1)
         self.ax2 = self.fig.add_subplot(2, 2, 2)
         self.ax3 = self.fig.add_subplot(2, 2, 3)
@@ -113,7 +172,7 @@ class Graph:
 
 if __name__ =='__main__':
     
-    p = Graph()
+    p = Graph_4(8,8)
     
     p.start_graph()
     
