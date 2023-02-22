@@ -55,9 +55,6 @@ def raw_to_clean(line):
 
 class SerialConnection():
 
-
-    
-
     def __init__(self) -> None:
 
         
@@ -336,3 +333,6 @@ if __name__ == '__main__':
     ser = SerialConnection()
     
     ser.main()
+
+
+    

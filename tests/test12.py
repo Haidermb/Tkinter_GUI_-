@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 from datetime import datetime, timedelta
 
+
 class FourAnimatedGraphs:
 
     def __init__(self):
@@ -47,3 +48,13 @@ class FourAnimatedGraphs:
 
 graphs = FourAnimatedGraphs()
 graphs.start_animation()
+
+
+
+
+
+
+
+
+
+

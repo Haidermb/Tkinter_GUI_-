@@ -1,3 +1,4 @@
+
 s1 = ['P', 'I', 'E', 'U', 'X', "t", 'l', 'x', 'o', 'y', 's', 'h']
 e1 = ['I', 'E', 'U', 'X', "123456789", 'l', 'x', 'o', 'y', 'q1s', 'h', 'P0']
 p1 = ["Pressure", "Int_temp", "Ext_temp", "Humidity", "Voltage", "GPS time",
@@ -15,3 +16,5 @@ regex = r"([P-I]+)"
 match = re.search(regex,raw)
 #print(match.group())
 print(match.group(0))
+
+

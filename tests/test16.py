@@ -25,7 +25,6 @@ def open_terminal():
     terminal_scrollbar.pack(side="bottom", fill="x")
 
 
-
 # Create a new Tkinter window
 root = tk.Tk()
 root.title("Graphs, Table, and Terminal")
