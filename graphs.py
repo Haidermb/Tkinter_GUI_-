@@ -7,16 +7,18 @@ from serial_connec import *
 
 class Graph_1:
     
-    def __init__(self,x: int,y: int,k:str,ser) -> None:
+    def __init__(self,x: int,y: int,k:str,ser,color:str,marker:str) -> None:
        
         # Create a Matplotlib figure and add a plot to it
         self.fig = plt.Figure(figsize=(x, y), dpi=100)
-        self.ax = self.fig1.add_subplot(111)
+        self.ax = self.fig.add_subplot(111)
         self.xs = []
         self.ys = []
         self.k = k
+        self.color = color
+        self.marker = marker 
         self.ser = ser
-
+    
     def gen2(self):
         a = {}
         l = ['Pressure','Int_temp','Ext_temp','Humidity','Voltage']
@@ -35,10 +37,8 @@ class Graph_1:
         return a
         
     def c_animate(self,i,xs,ys):
-        self.ser = SerialConnection()
-        # line =     
-        # line = self.__read_data() 
-        # dict_value  = find_data(line[12:])
+
+#        dict_value = self.ser.read_data()
         dict_value  = self.gen2()
         if dict_value :
             y = dict_value[self.k]
@@ -55,15 +55,15 @@ class Graph_1:
         ys = ys[-20:]
         # Draw x and y lists
         self.ax.clear()
-        self.ax.plot(xs, ys,marker ='.',color ='r')
+        self.ax.plot(xs, ys,marker ='.',color =self.color)
         self.ax.set_xticklabels(xs,rotation=45)
         plt.subplots_adjust(bottom=0.38)
-        self.ax.set_title(self.k)
+        self.ax.set_title(self.k)   
         
     def start_graph(self):
    
         self.ani = animation.FuncAnimation(self.fig, self.c_animate ,fargs=(self.xs, self.ys), interval=1000)
-        plt.show()
+        #self.plt = plt.show()
 
 
 
@@ -76,7 +76,7 @@ class Graph_4:
         self.ax2 = self.fig.add_subplot(2, 2, 2)
         self.ax3 = self.fig.add_subplot(2, 2, 3)
         self.ax4 = self.fig.add_subplot(2, 2, 4)
-
+        self.ser = ser
 
         self.xs = []
         self.ys = []
@@ -105,9 +105,8 @@ class Graph_4:
         
     def c_animate(self,i,xs,y1,y2,y3,y4):
 
-        # line = self.__read_data() 
-        # dict_value  = find_data(line[12:])
-        dict_value  = self.gen2()
+        #dict_value = self.ser.read_data()
+        dict_value = self.gen2()
         if dict_value :
             p = dict_value['Pressure']
             it = dict_value['Int_temp']
@@ -115,7 +114,6 @@ class Graph_4:
             h = dict_value['Humidity']
             v = dict_value['Voltage']
         
-        #h = self.gen()
         
         # Add x and y to lists
         xs.append(dt.datetime.now().strftime('%H:%M:%S'))
@@ -161,8 +159,8 @@ class Graph_4:
         plt.subplots_adjust(bottom=0.38)
         self.ax1.set_title('Pressure')
         self.ax2.set_title('Ext_Temp')
-        self.ax3.set_title('Humid')
-        self.ax4.set_title('Volt')
+        self.ax3.set_title('Humidity')
+        self.ax4.set_title('Voltage')
         
         #plt.title('TMP102 Temperature over Time')
         #plt.ylabel('Temperature (deg C)')
@@ -170,13 +168,8 @@ class Graph_4:
     def start_graph(self):
    
         self.ani = animation.FuncAnimation(self.fig, self.c_animate ,fargs=(self.xs, self.y1,self.y2,self.y3,self.y4), interval=1000)
-        plt.show()
+        
 
 
-if __name__ =='__main__':
-    
-    p = Graph_4(8,8)
-    
-    p.start_graph()
-    
+
 
