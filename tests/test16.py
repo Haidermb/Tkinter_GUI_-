@@ -47,7 +47,7 @@ tab1 = ttk.Frame(notebook)
 notebook.add(tab1, text="Graph 1")
 
 # Create a Matplotlib figure and add a plot to it
-fig1 = plt.Figure(figsize=(5, 4), dpi=100)
+fig1 = plt.Figure(figsize=(6, 5), dpi=100)
 ax1 = fig1.add_subplot(111)
 ax1.plot([1, 2, 3, 4], [10, 20, 30, 40])
 
@@ -89,7 +89,7 @@ tab4 = ttk.Frame(notebook)
 notebook.add(tab4, text="Graph 4")
 
 # Create a fourth Matplotlib figure and add a plot to it
-fig4 = plt.Figure(figsize=(5, 4), dpi=100)
+fig4 = plt.Figure(figsize=(5, 4))
 ax4 = fig4.add_subplot(111)
 ax4.plot([1, 2, 3, 4], [30, 40, 10, 20])
 

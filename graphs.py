@@ -69,7 +69,7 @@ class Graph_1:
 
 class Graph_4:
 
-    def __init__(self,x,y,ser) -> None:
+    def __init__(self,x,y,ser,table) -> None:
        
         self.fig = plt.figure(figsize=(x,y),tight_layout=True)
         self.ax1 = self.fig.add_subplot(2, 2, 1)
@@ -77,7 +77,7 @@ class Graph_4:
         self.ax3 = self.fig.add_subplot(2, 2, 3)
         self.ax4 = self.fig.add_subplot(2, 2, 4)
         self.ser = ser
-
+        self.table=table
         self.xs = []
         self.ys = []
         self.y1 = []
@@ -114,6 +114,7 @@ class Graph_4:
             h = dict_value['Humidity']
             v = dict_value['Voltage']
         
+        self.table.insert(dict_value)
         
         # Add x and y to lists
         xs.append(dt.datetime.now().strftime('%H:%M:%S'))
@@ -152,6 +153,7 @@ class Graph_4:
         self.ax4.plot(xs, y4,marker ='.')
         self.ax4.set_xticklabels(xs,rotation=45)
 
+        
         # Format plot
         
         #plt.xticks(rotation=45, ha='right')
