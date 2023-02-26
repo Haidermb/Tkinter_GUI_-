@@ -110,18 +110,18 @@ canvas1.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
 
 
-# terminal_frame = ttk.Frame(root)
-# terminal_frame.pack(fill='both', expand=True)
+# # terminal_frame = ttk.Frame(root)
+# # terminal_frame.pack(fill='both', expand=True)
 
-# terminal_text = tk.Text(terminal_frame)
-# terminal_text.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+# # terminal_text = tk.Text(terminal_frame)
+# # terminal_text.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-# terminal_text.insert(tk.END, "Welcome to the terminal!\n")
-# terminal_text.insert(tk.END, "Type your commands here.\n")
+# # terminal_text.insert(tk.END, "Welcome to the terminal!\n")
+# # terminal_text.insert(tk.END, "Type your commands here.\n")
 
-# terminal_scrollbar = ttk.Scrollbar(terminal_frame, orient="horizontal", command=terminal_text.xview)
-# terminal_text.configure(xscrollcommand=terminal_scrollbar.set)
-# terminal_scrollbar.pack(side="bottom", fill="x")
+# # terminal_scrollbar = ttk.Scrollbar(terminal_frame, orient="horizontal", command=terminal_text.xview)
+# # terminal_text.configure(xscrollcommand=terminal_scrollbar.set)
+# # terminal_scrollbar.pack(side="bottom", fill="x")
 
 # Create a frame for the table
 table_frame = ttk.Frame(root)
